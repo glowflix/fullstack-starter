@@ -1,234 +1,234 @@
 # Fullstack Starter
 
-[English](./README.en.md) | 한국어
+English | [한국어](./README.ko.md)
 
-프로덕션 레디 풀스택 모노레포 템플릿. Next.js 16, FastAPI, Flutter, GCP 인프라를 포함합니다.
+Production-ready fullstack monorepo template with Next.js 16, FastAPI, Flutter, and GCP infrastructure.
 
-## 주요 기능
+## Key Features
 
-- **모던 스택**: Next.js 16 + React 19, FastAPI, Flutter 3.32, TailwindCSS v4
-- **타입 안전성**: TypeScript, Pydantic, Dart 전체 타입 지원
-- **인증**: better-auth 기반 OAuth (Google, GitHub, Kakao)
-- **국제화**: next-intl (웹), Flutter ARB (모바일), 공용 i18n 패키지
-- **API 클라이언트 자동 생성**: Orval (웹), swagger_parser (모바일)
-- **인프라 as 코드**: Terraform + GCP (Cloud Run, Cloud SQL, Cloud Storage)
-- **CI/CD**: GitHub Actions + Workload Identity Federation (키리스 배포)
-- **AI 에이전트 지원**: Gemini, Claude 등 AI 코딩 에이전트용 가이드 포함
-- **mise 모노레포**: mise 기반 태스크 관리 및 도구 버전 통합
+- **Modern Stack**: Next.js 16 + React 19, FastAPI, Flutter 3.32, TailwindCSS v4
+- **Type Safety**: Full type support with TypeScript, Pydantic, and Dart
+- **Authentication**: OAuth with better-auth (Google, GitHub, Kakao)
+- **Internationalization**: next-intl (web), Flutter ARB (mobile), shared i18n package
+- **Auto-generated API Clients**: Orval (web), swagger_parser (mobile)
+- **Infrastructure as Code**: Terraform + GCP (Cloud Run, Cloud SQL, Cloud Storage)
+- **CI/CD**: GitHub Actions + Workload Identity Federation (keyless deployment)
+- **AI Agent Support**: Guidelines for AI coding agents (Gemini, Claude, etc.)
+- **mise Monorepo**: mise-based task management and unified tool versions
 
-## 기술 스택
+## Tech Stack
 
-| 레이어 | 기술 |
-|--------|------|
-| **프론트엔드** | Next.js 16, React 19, TailwindCSS v4, shadcn/ui, TanStack Query, Jotai |
-| **백엔드** | FastAPI, SQLAlchemy (async), PostgreSQL 16, Redis 7 |
-| **모바일** | Flutter 3.32, Riverpod 3, go_router 17 |
-| **워커** | FastAPI + CloudTasks/PubSub |
-| **인프라** | Terraform, GCP (Cloud Run, Cloud SQL, Cloud Storage, CDN) |
+| Layer | Technology |
+|-------|------------|
+| **Frontend** | Next.js 16, React 19, TailwindCSS v4, shadcn/ui, TanStack Query, Jotai |
+| **Backend** | FastAPI, SQLAlchemy (async), PostgreSQL 16, Redis 7 |
+| **Mobile** | Flutter 3.32, Riverpod 3, go_router 17 |
+| **Worker** | FastAPI + CloudTasks/PubSub |
+| **Infrastructure** | Terraform, GCP (Cloud Run, Cloud SQL, Cloud Storage, CDN) |
 | **CI/CD** | GitHub Actions, Workload Identity Federation |
-| **도구 관리** | mise (Node, Python, Flutter, Terraform 버전 통합) |
+| **Tool Management** | mise (unified Node, Python, Flutter, Terraform versions) |
 
-## 사전 요구사항
+## Prerequisites
 
-- [mise](https://mise.jdx.dev/) - 런타임 버전 관리자
-- [Docker](https://www.docker.com/) - 로컬 인프라 실행
-- [Terraform](https://www.terraform.io/) - 클라우드 인프라 (선택)
+- [mise](https://mise.jdx.dev/) - Runtime version manager
+- [Docker](https://www.docker.com/) - Local infrastructure
+- [Terraform](https://www.terraform.io/) - Cloud infrastructure (optional)
 
-## 빠른 시작
+## Quick Start
 
-### 1. 런타임 설치
+### 1. Install Runtimes
 
 ```bash
-# mise 설치 (처음인 경우)
+# Install mise (if not installed)
 curl https://mise.run | sh
 
-# 모든 런타임 설치 (Node 24, Python 3.13, Flutter 3, pnpm 10, uv, Terraform)
+# Install all runtimes (Node 24, Python 3.13, Flutter 3, pnpm 10, uv, Terraform)
 mise install
 ```
 
-### 2. 의존성 설치
+### 2. Install Dependencies
 
 ```bash
-# 루트 의존성 (JS/TS)
+# Root dependencies (JS/TS)
 pnpm install
 
-# API 의존성
+# API dependencies
 cd apps/api && uv sync --frozen
 
-# Worker 의존성
+# Worker dependencies
 cd apps/worker && uv sync --frozen
 
-# Mobile 의존성
+# Mobile dependencies
 cd apps/mobile && flutter pub get
 ```
 
-### 3. 로컬 인프라 시작
+### 3. Start Local Infrastructure
 
 ```bash
 mise //apps/api:infra:up
 ```
 
-시작되는 서비스:
+This starts:
 - PostgreSQL (5432)
 - Redis (6379)
 - MinIO (9000, 9001)
 
-### 4. 데이터베이스 마이그레이션
+### 4. Run Database Migrations
 
 ```bash
 mise //apps/api:migrate
 ```
 
-### 5. 개발 서버 시작
+### 5. Start Development Servers
 
 ```bash
-# 모든 서비스 동시 시작 (권장)
+# Start all services (recommended)
 mise dev
 
-# 또는 개별 시작
-mise //apps/api:dev    # API 서버
-mise //apps/web:dev    # Web 서버
+# Or start individually
+mise //apps/api:dev    # API server
+mise //apps/web:dev    # Web server
 mise //apps/worker:dev # Worker
 ```
 
-## 프로젝트 구조
+## Project Structure
 
 ```
 fullstack-starter/
 ├── apps/
-│   ├── api/           # FastAPI 백엔드
-│   ├── web/           # Next.js 프론트엔드
-│   ├── worker/        # 백그라운드 워커
-│   ├── mobile/        # Flutter 모바일 앱
-│   └── infra/         # Terraform 인프라
+│   ├── api/           # FastAPI backend
+│   ├── web/           # Next.js frontend
+│   ├── worker/        # Background worker
+│   ├── mobile/        # Flutter mobile app
+│   └── infra/         # Terraform infrastructure
 ├── packages/
-│   └── i18n/          # 공용 다국어 패키지 (Source of Truth)
-├── .agent/rules/      # AI 에이전트 가이드라인
-├── .serena/           # Serena MCP 설정
+│   └── i18n/          # Shared i18n package (Source of Truth)
+├── .agent/rules/      # AI agent guidelines
+├── .serena/           # Serena MCP config
 └── .github/workflows/ # CI/CD
 ```
 
-## 주요 명령어
+## Commands
 
-### mise 모노레포 태스크
+### mise Monorepo Tasks
 
-mise 모노레포 모드를 사용하여 `//path:task` 형식으로 태스크를 실행합니다.
+This project uses mise monorepo mode with `//path:task` syntax.
 
 ```bash
-# 전체 태스크 목록 보기
+# List all available tasks
 mise tasks --all
 ```
 
-| 명령어 | 설명 |
-|--------|------|
-| `mise dev` | 모든 서비스 시작 |
-| `mise lint` | 모든 앱 린트 |
-| `mise format` | 모든 앱 포맷 |
-| `mise test` | 모든 앱 테스트 |
-| `mise typecheck` | 타입 체크 |
-| `mise i18n:build` | 다국어 파일 빌드 |
+| Command | Description |
+|---------|-------------|
+| `mise dev` | Start all services |
+| `mise lint` | Lint all apps |
+| `mise format` | Format all apps |
+| `mise test` | Test all apps |
+| `mise typecheck` | Type check |
+| `mise i18n:build` | Build i18n files |
 
-### 앱별 태스크
+### App-specific Tasks
 
 <details>
 <summary>API (apps/api)</summary>
 
-| 명령어 | 설명 |
-|--------|------|
-| `mise //apps/api:dev` | 개발 서버 시작 |
-| `mise //apps/api:test` | 테스트 실행 |
-| `mise //apps/api:lint` | 린터 실행 |
-| `mise //apps/api:format` | 코드 포맷 |
-| `mise //apps/api:migrate` | 마이그레이션 실행 |
-| `mise //apps/api:migrate:create` | 새 마이그레이션 생성 |
-| `mise //apps/api:infra:up` | 로컬 인프라 시작 |
-| `mise //apps/api:infra:down` | 로컬 인프라 중지 |
+| Command | Description |
+|---------|-------------|
+| `mise //apps/api:dev` | Start development server |
+| `mise //apps/api:test` | Run tests |
+| `mise //apps/api:lint` | Run linter |
+| `mise //apps/api:format` | Format code |
+| `mise //apps/api:migrate` | Run migrations |
+| `mise //apps/api:migrate:create` | Create new migration |
+| `mise //apps/api:infra:up` | Start local infrastructure |
+| `mise //apps/api:infra:down` | Stop local infrastructure |
 
 </details>
 
 <details>
 <summary>Web (apps/web)</summary>
 
-| 명령어 | 설명 |
-|--------|------|
-| `mise //apps/web:dev` | 개발 서버 시작 |
-| `mise //apps/web:build` | 프로덕션 빌드 |
-| `mise //apps/web:test` | 테스트 실행 |
-| `mise //apps/web:lint` | 린터 실행 |
-| `mise //apps/web:gen:api` | API 클라이언트 생성 |
+| Command | Description |
+|---------|-------------|
+| `mise //apps/web:dev` | Start development server |
+| `mise //apps/web:build` | Production build |
+| `mise //apps/web:test` | Run tests |
+| `mise //apps/web:lint` | Run linter |
+| `mise //apps/web:gen:api` | Generate API client |
 
 </details>
 
 <details>
 <summary>Mobile (apps/mobile)</summary>
 
-| 명령어 | 설명 |
-|--------|------|
-| `mise //apps/mobile:dev` | 디바이스/시뮬레이터에서 실행 |
-| `mise //apps/mobile:build` | 빌드 |
-| `mise //apps/mobile:test` | 테스트 실행 |
-| `mise //apps/mobile:lint` | 분석기 실행 |
-| `mise //apps/mobile:gen:l10n` | 다국어 파일 생성 |
+| Command | Description |
+|---------|-------------|
+| `mise //apps/mobile:dev` | Run on device/simulator |
+| `mise //apps/mobile:build` | Build |
+| `mise //apps/mobile:test` | Run tests |
+| `mise //apps/mobile:lint` | Run analyzer |
+| `mise //apps/mobile:gen:l10n` | Generate localizations |
 
 </details>
 
 <details>
 <summary>Worker (apps/worker)</summary>
 
-| 명령어 | 설명 |
-|--------|------|
-| `mise //apps/worker:dev` | 워커 시작 |
-| `mise //apps/worker:test` | 테스트 실행 |
-| `mise //apps/worker:lint` | 린터 실행 |
+| Command | Description |
+|---------|-------------|
+| `mise //apps/worker:dev` | Start worker |
+| `mise //apps/worker:test` | Run tests |
+| `mise //apps/worker:lint` | Run linter |
 
 </details>
 
 <details>
 <summary>Infrastructure (apps/infra)</summary>
 
-| 명령어 | 설명 |
-|--------|------|
-| `mise //apps/infra:init` | Terraform 초기화 |
-| `mise //apps/infra:plan` | 변경사항 미리보기 |
-| `mise //apps/infra:apply` | 변경사항 적용 |
-| `mise //apps/infra:plan:prod` | 프로덕션 미리보기 |
-| `mise //apps/infra:apply:prod` | 프로덕션 적용 |
+| Command | Description |
+|---------|-------------|
+| `mise //apps/infra:init` | Initialize Terraform |
+| `mise //apps/infra:plan` | Preview changes |
+| `mise //apps/infra:apply` | Apply changes |
+| `mise //apps/infra:plan:prod` | Preview production |
+| `mise //apps/infra:apply:prod` | Apply production |
 
 </details>
 
 <details>
 <summary>i18n (packages/i18n)</summary>
 
-| 명령어 | 설명 |
-|--------|------|
-| `mise //packages/i18n:build` | 웹/모바일용 다국어 파일 생성 |
-| `mise //packages/i18n:build:web` | 웹용만 생성 |
-| `mise //packages/i18n:build:mobile` | 모바일용만 생성 |
+| Command | Description |
+|---------|-------------|
+| `mise //packages/i18n:build` | Build i18n files for web and mobile |
+| `mise //packages/i18n:build:web` | Build for web only |
+| `mise //packages/i18n:build:mobile` | Build for mobile only |
 
 </details>
 
-## 다국어 (i18n) 관리
+## Internationalization (i18n)
 
-`packages/i18n`이 다국어 리소스의 Single Source of Truth입니다.
+`packages/i18n` is the Single Source of Truth for i18n resources.
 
 ```bash
-# 다국어 파일 편집
-packages/i18n/source/en.arb  # 영어 (기본)
-packages/i18n/source/ko.arb  # 한국어
-packages/i18n/source/ja.arb  # 일본어
+# Edit i18n files
+packages/i18n/source/en.arb  # English (default)
+packages/i18n/source/ko.arb  # Korean
+packages/i18n/source/ja.arb  # Japanese
 
-# 빌드하여 각 앱에 배포
+# Build and deploy to each app
 mise i18n:build
-# 생성되는 파일:
+# Generated files:
 # - apps/web/messages/*.json (Nested JSON)
 # - apps/mobile/lib/l10n/app_*.arb (Flutter ARB)
 ```
 
-## 환경 설정
+## Configuration
 
-### 환경 변수
+### Environment Variables
 
-예제 파일을 복사하고 설정하세요:
+Copy example files and configure:
 
 ```bash
 # API
@@ -241,57 +241,57 @@ cp apps/web/.env.example apps/web/.env
 cp apps/infra/terraform.tfvars.example apps/infra/terraform.tfvars
 ```
 
-### GitHub Actions 시크릿
+### GitHub Actions Secrets
 
-리포지토리에 다음 시크릿을 설정하세요:
+Set these secrets in your repository:
 
-| 시크릿 | 설명 |
-|--------|------|
-| `GCP_PROJECT_ID` | GCP 프로젝트 ID |
-| `GCP_REGION` | GCP 리전 (예: `asia-northeast3`) |
-| `WORKLOAD_IDENTITY_PROVIDER` | Terraform output에서 확인 |
-| `GCP_SERVICE_ACCOUNT` | Terraform output에서 확인 |
+| Secret | Description |
+|--------|-------------|
+| `GCP_PROJECT_ID` | GCP project ID |
+| `GCP_REGION` | GCP region (e.g., `asia-northeast3`) |
+| `WORKLOAD_IDENTITY_PROVIDER` | From Terraform output |
+| `GCP_SERVICE_ACCOUNT` | From Terraform output |
 
-## 배포
+## Deployment
 
-### GitHub Actions (권장)
+### GitHub Actions (Recommended)
 
-`main` 브랜치에 푸시하면 자동 배포:
-- `apps/api/` 변경 → API 배포
-- `apps/web/` 변경 → Web 배포
-- `apps/worker/` 변경 → Worker 배포
+Push to `main` branch triggers automatic deployment:
+- `apps/api/` changes → Deploy API
+- `apps/web/` changes → Deploy Web
+- `apps/worker/` changes → Deploy Worker
 
-### 수동 배포
+### Manual Deployment
 
 ```bash
-# Docker 이미지 빌드 및 푸시
+# Build and push Docker images
 cd apps/api
 docker build -t gcr.io/PROJECT_ID/api .
 docker push gcr.io/PROJECT_ID/api
 
-# Cloud Run 배포
+# Deploy to Cloud Run
 gcloud run deploy api --image gcr.io/PROJECT_ID/api --region REGION
 ```
 
-## AI 에이전트 지원
+## AI Agent Support
 
-이 템플릿은 AI 코딩 에이전트(Gemini, Claude 등)와 함께 사용하도록 설계되었습니다.
+This template is designed to work with AI coding agents (Gemini, Claude, etc.).
 
-- `.agent/rules/` - AI 에이전트용 가이드라인
-- `.serena/` - Serena MCP 설정
+- `.agent/rules/` - Guidelines for AI agents
+- `.serena/` - Serena MCP configuration
 
-## 문서
+## Documentation
 
-- [빌드 가이드](.agent/rules/build-guide.md)
-- [린트 & 포맷 가이드](.agent/rules/lint-format-guide.md)
-- [테스트 가이드](.agent/rules/test-guide.md)
+- [Build Guide](.agent/rules/build-guide.md)
+- [Lint & Format Guide](.agent/rules/lint-format-guide.md)
+- [Test Guide](.agent/rules/test-guide.md)
 
-## 라이선스
+## License
 
 MIT
 
-## 스폰서
+## Sponsors
 
-이 프로젝트가 도움이 되셨다면 커피 한 잔 사주세요!
+If this project helped you, please consider buying me a coffee!
 
 <a href="https://www.buymeacoffee.com/firstfluke" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
