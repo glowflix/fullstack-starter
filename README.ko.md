@@ -4,6 +4,8 @@
 
 프로덕션 레디 풀스택 모노레포 템플릿. Next.js 16, FastAPI, Flutter, GCP 인프라를 포함합니다.
 
+### 3-Tier Architecture
+
 ```mermaid
 graph TB
     subgraph Client["클라이언트"]

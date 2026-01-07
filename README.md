@@ -4,6 +4,8 @@ English | [한국어](./README.ko.md)
 
 Production-ready fullstack monorepo template with Next.js 16, FastAPI, Flutter, and GCP infrastructure.
 
+### 3-Tier Architecture
+
 ```mermaid
 graph TB
     subgraph Client
