@@ -3,24 +3,23 @@
 ## Overview
 
 Testing stack:
-- **Web**: Vitest (unit) + Playwright (E2E)
+- **Web**: Vitest (unit/integration)
 - **API**: pytest + pytest-asyncio
 - **Worker**: pytest + pytest-asyncio
-- **Mobile**: flutter_test + integration_test
+- **Mobile**: flutter_test
 
 ## Quick Commands
 
 ### Run All Tests
 ```bash
-# From root
-pnpm test           # All JS/TS tests
+# All tests
+mise test
 
-# Python
-cd apps/api && poe test
-cd apps/worker && poe test
-
-# Flutter
-cd apps/mobile && flutter test
+# Or individually
+mise //apps/api:test
+mise //apps/web:test
+mise //apps/worker:test
+mise //apps/mobile:test
 ```
 
 ### Watch Mode
@@ -28,8 +27,8 @@ cd apps/mobile && flutter test
 # Web
 cd apps/web && pnpm test:watch
 
-# API (no built-in watch, use pytest-watch)
-cd apps/api && ptw
+# API (use pytest-watch)
+cd apps/api && uv run ptw
 ```
 
 ### Coverage
@@ -38,7 +37,7 @@ cd apps/api && ptw
 cd apps/web && pnpm test:coverage
 
 # API
-cd apps/api && poe test:cov
+cd apps/api && uv run poe test-cov
 
 # Flutter
 cd apps/mobile && flutter test --coverage
@@ -180,12 +179,13 @@ async def client(db_session):
 ## Flutter Testing
 
 ### Configuration
-See `apps/mobile/pubspec.yaml` dev_dependencies.
+See `apps/mobile/pubspec.yaml` dev_dependencies and `analysis_options.yaml`.
+
+Uses `very_good_analysis` for strict linting.
 
 ### File Patterns
 - Unit tests: `test/**/*_test.dart`
 - Widget tests: `test/**/*_widget_test.dart`
-- Integration tests: `integration_test/**/*_test.dart`
 
 ### Example Unit Test
 ```dart
@@ -220,76 +220,19 @@ void main() {
 }
 ```
 
-### Integration Test
-```dart
-// integration_test/app_test.dart
-import 'package:flutter_test/flutter_test.dart';
-import 'package:integration_test/integration_test.dart';
-import 'package:my_app/main.dart' as app;
-
-void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-
-  testWidgets('full app test', (tester) async {
-    app.main();
-    await tester.pumpAndSettle();
-
-    // Navigate and interact
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pumpAndSettle();
-
-    expect(find.text('New Item'), findsOneWidget);
-  });
-}
-```
-
-## E2E Testing (Playwright)
-
-### Installation
-```bash
-cd apps/web
-pnpm add -D @playwright/test
-npx playwright install
-```
-
-### Example E2E Test
-```typescript
-// e2e/home.spec.ts
-import { test, expect } from '@playwright/test';
-
-test.describe('Home Page', () => {
-  test('should display welcome message', async ({ page }) => {
-    await page.goto('/');
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Welcome');
-  });
-
-  test('should navigate to about page', async ({ page }) => {
-    await page.goto('/');
-    await page.click('text=About');
-    await expect(page).toHaveURL('/about');
-  });
-});
-```
-
 ## CI Testing
 
 GitHub Actions runs tests on every PR:
 
 ```yaml
 - name: Test Web
-  run: |
-    cd apps/web
-    pnpm test
+  run: mise //apps/web:test
 
 - name: Test API
-  run: |
-    cd apps/api
-    poe test
+  run: mise //apps/api:test
 
 - name: Test Flutter
-  run: |
-    cd apps/mobile
-    flutter test
+  run: mise //apps/mobile:test
 ```
 
 ## Best Practices

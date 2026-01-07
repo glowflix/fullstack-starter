@@ -12,15 +12,17 @@ Modern fullstack monorepo template with Next.js 16, FastAPI, Flutter, and GCP in
 - **Auth**: better-auth
 - **i18n**: next-intl
 - **API Client**: Orval (OpenAPI codegen)
-- **Testing**: Vitest + Playwright
+- **Testing**: Vitest
 
 ### Backend (apps/api)
 - **Framework**: FastAPI with Python 3.13
 - **Database**: PostgreSQL 16 with SQLAlchemy async
-- **Cache**: Redis 7.2
+- **Cache**: Redis 7
 - **Migrations**: Alembic
 - **Storage**: GCS / MinIO
-- **Package Manager**: uv + poe tasks
+- **Observability**: OpenTelemetry + structlog
+- **Rate Limiting**: In-memory or Redis (configurable)
+- **Package Manager**: uv
 
 ### Worker (apps/worker)
 - **Framework**: FastAPI (HTTP-based worker)
@@ -28,29 +30,51 @@ Modern fullstack monorepo template with Next.js 16, FastAPI, Flutter, and GCP in
 - **Retry**: tenacity
 
 ### Mobile (apps/mobile)
-- **Framework**: Flutter 3
-- **State**: Riverpod
-- **Routing**: go_router
+- **Framework**: Flutter 3.32
+- **State**: Riverpod 3
+- **Routing**: go_router 17
 - **API Client**: swagger_parser (OpenAPI codegen)
-- **l10n**: Flutter intl
+- **l10n**: Flutter intl (ARB format)
+- **Crash Reporting**: Firebase Crashlytics
+- **CI/CD**: Fastlane
+- **Lint**: very_good_analysis
 
 ### Infrastructure (apps/infra)
 - **IaC**: Terraform
-- **Cloud**: GCP (Cloud Run, Cloud SQL, Memorystore, GCS, Cloud Tasks, Pub/Sub)
+- **Cloud**: GCP (Cloud Run, Cloud SQL, Memorystore, GCS, Cloud Tasks, Pub/Sub, CDN)
 - **CI/CD**: GitHub Actions with Workload Identity Federation
+- **Security**: CodeQL SAST
+
+### Shared Packages (packages/)
+- **i18n**: Single source of truth for translations (ARB format)
+  - Auto-generates JSON for web (next-intl)
+  - Auto-generates ARB for mobile (Flutter intl)
 
 ## Project Structure
 ```
 fullstack-starter/
 ├── apps/
 │   ├── api/          # FastAPI backend
+│   │   └── src/
+│   │       ├── common/models/  # Base models, pagination
+│   │       └── lib/            # Auth, config, rate_limit, telemetry
 │   ├── web/          # Next.js frontend
+│   │   └── src/
+│   │       ├── app/            # App router pages
+│   │       ├── lib/            # Utilities, API client, auth
+│   │       └── hooks/          # Custom hooks
 │   ├── worker/       # Background worker
 │   ├── mobile/       # Flutter mobile app
+│   │   ├── lib/
+│   │   │   ├── core/           # Network, router, theme
+│   │   │   └── i18n/messages/  # Generated ARB files
+│   │   └── fastlane/           # CI/CD automation
 │   └── infra/        # Terraform infrastructure
-├── packages/         # Shared packages (if needed)
-├── docs/             # Documentation
-└── [config files]    # Root configuration
+├── packages/
+│   └── i18n/         # Shared i18n (source of truth)
+│       └── source/   # ARB source files
+├── .agent/rules/     # AI agent guidelines
+└── .github/workflows/ # CI/CD pipelines
 ```
 
 ## Key Patterns
@@ -60,17 +84,30 @@ fullstack-starter/
 - Repository pattern for data access
 - Dependency injection via FastAPI Depends
 - Abstract base classes for AI and Storage providers
+- Rate limiting: `src/lib/rate_limit.py` (in-memory or Redis)
+- Pagination: `src/common/models/pagination.py` (PaginatedResponse[T])
 
 ### Web Layer
 - App Router with Route Groups
 - Server Components by default
 - Client Components only when needed (interactivity, hooks)
 - Colocation of components with routes
+- Proxy configuration in `src/proxy.ts` (security headers, i18n)
 
 ### Mobile Layer
 - Feature-first architecture
 - Riverpod for DI and state
 - Freezed for immutable models
+- Firebase Crashlytics for crash reporting
+- Fastlane for build automation
+
+### i18n Flow
+```
+packages/i18n/source/*.arb (edit here)
+        ↓ mise i18n:build
+apps/web/src/config/messages/*.json (auto-generated)
+apps/mobile/lib/i18n/messages/*.arb (auto-generated)
+```
 
 ## Code Conventions
 
@@ -93,9 +130,28 @@ fullstack-starter/
 - Pydantic models for request/response schemas
 - ABC for extensible components (AI providers, Storage, etc.)
 
+### Dart/Flutter
+- Strict mode with very_good_analysis
+- Riverpod for state management
+- Freezed for immutable data classes
+
 ## Important Files
-- `mise.toml` - Runtime versions and task runner
+
+### Configuration
+- `mise.toml` - Runtime versions and task runner (monorepo mode)
 - `biome.json` - JS/TS linting and formatting
-- `apps/api/pyproject.toml` - Python dependencies and tasks
-- `apps/web/package.json` - Web dependencies and scripts
+- `apps/api/ruff.toml` - Python linting
+- `apps/mobile/analysis_options.yaml` - Dart linting (very_good_analysis)
+
+### API
+- `apps/api/src/lib/config.py` - Environment settings
+- `apps/api/src/lib/rate_limit.py` - Rate limiting middleware
+- `apps/api/src/common/models/pagination.py` - Pagination utilities
+
+### Mobile
+- `apps/mobile/fastlane/Fastfile` - Build and deploy lanes
+- `apps/mobile/lib/firebase_options.dart` - Firebase config
+
+### Infrastructure
 - `apps/infra/variables.tf` - Infrastructure configuration
+- `.github/workflows/codeql.yml` - Security scanning
