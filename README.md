@@ -10,7 +10,7 @@ Production-ready fullstack monorepo template with Next.js 16, FastAPI, Flutter, 
 graph TB
     subgraph Client
         Web[Next.js 16<br/>React 19]
-        Mobile[Flutter 3.32<br/>Riverpod]
+        Mobile[Flutter 3.38<br/>Riverpod]
     end
 
     subgraph GCP["GCP Cloud Run"]
@@ -43,7 +43,7 @@ graph TB
 
 ## Key Features
 
-- **Modern Stack**: Next.js 16 + React 19, FastAPI, Flutter 3.32, TailwindCSS v4
+- **Modern Stack**: Next.js 16 + React 19, FastAPI, Flutter 3.38, TailwindCSS v4
 - **Type Safety**: Full type support with TypeScript, Pydantic, and Dart
 - **Authentication**: OAuth with better-auth (Google, GitHub, Facebook)
 - **Internationalization**: next-intl (web), Flutter ARB (mobile), shared i18n package
@@ -59,7 +59,7 @@ graph TB
 |-------|------------|
 | **Frontend** | Next.js 16, React 19, TailwindCSS v4, shadcn/ui, TanStack Query, Jotai |
 | **Backend** | FastAPI, SQLAlchemy (async), PostgreSQL 16, Redis 7 |
-| **Mobile** | Flutter 3.32, Riverpod 3, go_router 17, Firebase Crashlytics, Fastlane |
+| **Mobile** | Flutter 3.38, Riverpod 3, go_router 17, Firebase Crashlytics, Fastlane |
 | **Worker** | FastAPI + CloudTasks/PubSub |
 | **Infrastructure** | Terraform, GCP (Cloud Run, Cloud SQL, Cloud Storage, CDN) |
 | **CI/CD** | GitHub Actions, Workload Identity Federation |
@@ -139,7 +139,8 @@ fullstack-starter/
 │   ├── mobile/        # Flutter mobile app
 │   └── infra/         # Terraform infrastructure
 ├── packages/
-│   └── i18n/          # Shared i18n package (Source of Truth)
+│   ├── i18n/          # Shared i18n package (Source of Truth)
+│   └── shared/        # Shared utilities
 ├── .agent/rules/      # AI agent guidelines
 ├── .serena/           # Serena MCP config
 └── .github/workflows/ # CI/CD
@@ -177,6 +178,7 @@ mise tasks --all
 | `mise //apps/api:test` | Run tests |
 | `mise //apps/api:lint` | Run linter |
 | `mise //apps/api:format` | Format code |
+| `mise //apps/api:typecheck` | Type check |
 | `mise //apps/api:migrate` | Run migrations |
 | `mise //apps/api:migrate:create` | Create new migration |
 | `mise //apps/api:gen:openapi` | Generate OpenAPI schema |
@@ -194,6 +196,8 @@ mise tasks --all
 | `mise //apps/web:build` | Production build |
 | `mise //apps/web:test` | Run tests |
 | `mise //apps/web:lint` | Run linter |
+| `mise //apps/web:format` | Format code |
+| `mise //apps/web:typecheck` | Type check |
 | `mise //apps/web:gen:api` | Generate API client |
 
 </details>
@@ -207,6 +211,7 @@ mise tasks --all
 | `mise //apps/mobile:build` | Build |
 | `mise //apps/mobile:test` | Run tests |
 | `mise //apps/mobile:lint` | Run analyzer |
+| `mise //apps/mobile:format` | Format code |
 | `mise //apps/mobile:gen:l10n` | Generate localizations |
 | `mise //apps/mobile:gen:api` | Generate API client |
 
@@ -220,6 +225,7 @@ mise tasks --all
 | `mise //apps/worker:dev` | Start worker |
 | `mise //apps/worker:test` | Run tests |
 | `mise //apps/worker:lint` | Run linter |
+| `mise //apps/worker:format` | Format code |
 
 </details>
 
@@ -260,8 +266,8 @@ packages/i18n/source/ja.arb  # Japanese
 # Build and deploy to each app
 mise i18n:build
 # Generated files:
-# - apps/web/messages/*.json (Nested JSON)
-# - apps/mobile/lib/l10n/app_*.arb (Flutter ARB)
+# - apps/web/src/config/messages/*.json (Nested JSON)
+# - apps/mobile/lib/i18n/messages/app_*.arb (Flutter ARB)
 ```
 
 ## Configuration

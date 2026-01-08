@@ -50,7 +50,7 @@ See `biome.json` at project root.
 - Indent: 2 spaces
 - Quotes: double
 - Semicolons: required
-- Trailing commas: all
+- Trailing commas: ES5
 - Line width: 100
 
 ### Lint Categories
@@ -88,8 +88,8 @@ See `biome.json` at project root.
 See `ruff.toml` in `apps/api/` and `apps/worker/`.
 
 ### Key Rules
-- Line length: 100
-- Target: Python 3.13
+- Line length: 88
+- Target: Python 3.12
 - Indent: 4 spaces
 - Quotes: double
 
@@ -99,8 +99,10 @@ See `ruff.toml` in `apps/api/` and `apps/worker/`.
 - **I**: isort (import sorting)
 - **UP**: pyupgrade
 - **B**: flake8-bugbear
+- **S**: bandit (security)
 - **SIM**: flake8-simplify
 - **ASYNC**: flake8-async
+- **RUF**: Ruff-specific
 
 ### Editor Integration
 ```json
@@ -147,29 +149,30 @@ terraform validate
 
 ## Pre-commit Hooks
 
-Husky + lint-staged runs on every commit:
+mise runs tasks on every commit via git hooks:
 
-```json
-// package.json
-{
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,json,css,md}": [
-      "biome check --write"
-    ]
-  }
-}
+```bash
+# Setup git hooks (run once)
+git config core.hooksPath .git/hooks
+
+# Create pre-commit hook
+echo '#!/bin/sh
+mise git:pre-commit' > .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+
+# Create commit-msg hook  
+echo '#!/bin/sh
+mise git:commit-msg "$1"' > .git/hooks/commit-msg
+chmod +x .git/hooks/commit-msg
 ```
 
-For Python, add to `.pre-commit-config.yaml`:
-```yaml
-repos:
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.0
-    hooks:
-      - id: ruff
-        args: [--fix]
-      - id: ruff-format
-```
+The pre-commit task runs lint for changed apps:
+- `apps/api/` changes → `mise //apps/api:lint`
+- `apps/web/` changes → `mise //apps/web:lint`
+- `apps/worker/` changes → `mise //apps/worker:lint`
+- `apps/mobile/` changes → `mise //apps/mobile:lint`
+
+The commit-msg task validates commit messages using commitlint.
 
 ## CI Integration
 

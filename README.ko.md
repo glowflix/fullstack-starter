@@ -10,7 +10,7 @@
 graph TB
     subgraph Client["클라이언트"]
         Web[Next.js 16<br/>React 19]
-        Mobile[Flutter 3.32<br/>Riverpod]
+        Mobile[Flutter 3.38<br/>Riverpod]
     end
 
     subgraph GCP["GCP Cloud Run"]
@@ -43,7 +43,7 @@ graph TB
 
 ## 주요 기능
 
-- **모던 스택**: Next.js 16 + React 19, FastAPI, Flutter 3.32, TailwindCSS v4
+- **모던 스택**: Next.js 16 + React 19, FastAPI, Flutter 3.38, TailwindCSS v4
 - **타입 안전성**: TypeScript, Pydantic, Dart 전체 타입 지원
 - **인증**: better-auth 기반 OAuth (Google, GitHub, Facebook)
 - **국제화**: next-intl (웹), Flutter ARB (모바일), 공용 i18n 패키지
@@ -59,7 +59,7 @@ graph TB
 |--------|------|
 | **프론트엔드** | Next.js 16, React 19, TailwindCSS v4, shadcn/ui, TanStack Query, Jotai |
 | **백엔드** | FastAPI, SQLAlchemy (async), PostgreSQL 16, Redis 7 |
-| **모바일** | Flutter 3.32, Riverpod 3, go_router 17, Firebase Crashlytics, Fastlane |
+| **모바일** | Flutter 3.38, Riverpod 3, go_router 17, Firebase Crashlytics, Fastlane |
 | **워커** | FastAPI + CloudTasks/PubSub |
 | **인프라** | Terraform, GCP (Cloud Run, Cloud SQL, Cloud Storage, CDN) |
 | **CI/CD** | GitHub Actions, Workload Identity Federation |
@@ -139,7 +139,8 @@ fullstack-starter/
 │   ├── mobile/        # Flutter 모바일 앱
 │   └── infra/         # Terraform 인프라
 ├── packages/
-│   └── i18n/          # 공용 다국어 패키지 (Source of Truth)
+│   ├── i18n/          # 공용 다국어 패키지 (Source of Truth)
+│   └── shared/        # 공용 유틸리티
 ├── .agent/rules/      # AI 에이전트 가이드라인
 ├── .serena/           # Serena MCP 설정
 └── .github/workflows/ # CI/CD
@@ -177,6 +178,7 @@ mise tasks --all
 | `mise //apps/api:test` | 테스트 실행 |
 | `mise //apps/api:lint` | 린터 실행 |
 | `mise //apps/api:format` | 코드 포맷 |
+| `mise //apps/api:typecheck` | 타입 체크 |
 | `mise //apps/api:migrate` | 마이그레이션 실행 |
 | `mise //apps/api:migrate:create` | 새 마이그레이션 생성 |
 | `mise //apps/api:gen:openapi` | OpenAPI 스키마 생성 |
@@ -194,6 +196,8 @@ mise tasks --all
 | `mise //apps/web:build` | 프로덕션 빌드 |
 | `mise //apps/web:test` | 테스트 실행 |
 | `mise //apps/web:lint` | 린터 실행 |
+| `mise //apps/web:format` | 코드 포맷 |
+| `mise //apps/web:typecheck` | 타입 체크 |
 | `mise //apps/web:gen:api` | API 클라이언트 생성 |
 
 </details>
@@ -207,6 +211,7 @@ mise tasks --all
 | `mise //apps/mobile:build` | 빌드 |
 | `mise //apps/mobile:test` | 테스트 실행 |
 | `mise //apps/mobile:lint` | 분석기 실행 |
+| `mise //apps/mobile:format` | 코드 포맷 |
 | `mise //apps/mobile:gen:l10n` | 다국어 파일 생성 |
 | `mise //apps/mobile:gen:api` | API 클라이언트 생성 |
 
@@ -220,6 +225,7 @@ mise tasks --all
 | `mise //apps/worker:dev` | 워커 시작 |
 | `mise //apps/worker:test` | 테스트 실행 |
 | `mise //apps/worker:lint` | 린터 실행 |
+| `mise //apps/worker:format` | 코드 포맷 |
 
 </details>
 
@@ -260,8 +266,8 @@ packages/i18n/source/ja.arb  # 일본어
 # 빌드하여 각 앱에 배포
 mise i18n:build
 # 생성되는 파일:
-# - apps/web/messages/*.json (Nested JSON)
-# - apps/mobile/lib/l10n/app_*.arb (Flutter ARB)
+# - apps/web/src/config/messages/*.json (Nested JSON)
+# - apps/mobile/lib/i18n/messages/app_*.arb (Flutter ARB)
 ```
 
 ## 환경 설정

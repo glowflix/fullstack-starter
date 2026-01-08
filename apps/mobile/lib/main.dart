@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:forui/forui.dart';
 
 import 'core/router/router.dart';
 import 'core/theme/app_theme.dart';
@@ -49,19 +50,26 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
+    final brightness = MediaQuery.platformBrightnessOf(context);
+    final isDark = brightness == Brightness.dark;
+    final fTheme = isDark ? FThemes.zinc.dark : FThemes.zinc.light;
 
-    return MaterialApp.router(
-      title: 'Fullstack Starter',
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.system,
-      routerConfig: router,
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('ko'), Locale('en'), Locale('ja')],
+    return FTheme(
+      data: fTheme,
+      child: MaterialApp.router(
+        title: 'Fullstack Starter',
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        themeMode: ThemeMode.system,
+        routerConfig: router,
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          ...FLocalizations.localizationsDelegates,
+        ],
+        supportedLocales: const [Locale('ko'), Locale('en'), Locale('ja')],
+      ),
     );
   }
 }
