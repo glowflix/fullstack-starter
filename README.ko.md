@@ -300,6 +300,23 @@ cp apps/infra/terraform.tfvars.example apps/infra/terraform.tfvars
 | `FIREBASE_SERVICE_ACCOUNT_JSON` | Firebase 서비스 계정 JSON (모바일 배포용) |
 | `FIREBASE_ANDROID_APP_ID` | Firebase Android 앱 ID |
 
+### Firebase (모바일)
+
+1. FlutterFire CLI 설치:
+
+```bash
+dart pub global activate flutterfire_cli
+```
+
+2. Firebase 설정:
+
+```bash
+cd apps/mobile
+flutterfire configure
+```
+
+이 명령어로 `lib/firebase_options.dart`가 생성됩니다.
+
 ## 배포
 
 ### GitHub Actions (권장)
@@ -322,26 +339,7 @@ docker push gcr.io/PROJECT_ID/api
 gcloud run deploy api --image gcr.io/PROJECT_ID/api --region REGION
 ```
 
-## 모바일 설정
-
-### Firebase 설정
-
-1. FlutterFire CLI 설치:
-
-```bash
-dart pub global activate flutterfire_cli
-```
-
-2. Firebase 설정:
-
-```bash
-cd apps/mobile
-flutterfire configure
-```
-
-이 명령어로 `lib/firebase_options.dart`가 생성됩니다.
-
-### Fastlane
+### 모바일 (Fastlane)
 
 모바일 앱은 Fastlane을 사용하여 빌드 자동화 및 배포를 수행합니다.
 

@@ -300,6 +300,23 @@ Set these secrets in your repository:
 | `FIREBASE_SERVICE_ACCOUNT_JSON` | Firebase service account JSON (for mobile deployment) |
 | `FIREBASE_ANDROID_APP_ID` | Firebase Android app ID |
 
+### Firebase (Mobile)
+
+1. Install FlutterFire CLI:
+
+```bash
+dart pub global activate flutterfire_cli
+```
+
+2. Configure Firebase for your project:
+
+```bash
+cd apps/mobile
+flutterfire configure
+```
+
+This generates `lib/firebase_options.dart` with your Firebase configuration.
+
 ## Deployment
 
 ### GitHub Actions (Recommended)
@@ -322,26 +339,7 @@ docker push gcr.io/PROJECT_ID/api
 gcloud run deploy api --image gcr.io/PROJECT_ID/api --region REGION
 ```
 
-## Mobile Setup
-
-### Firebase Configuration
-
-1. Install FlutterFire CLI:
-
-```bash
-dart pub global activate flutterfire_cli
-```
-
-2. Configure Firebase for your project:
-
-```bash
-cd apps/mobile
-flutterfire configure
-```
-
-This generates `lib/firebase_options.dart` with your Firebase configuration.
-
-### Fastlane
+### Mobile (Fastlane)
 
 The mobile app uses Fastlane for build automation and deployment.
 
