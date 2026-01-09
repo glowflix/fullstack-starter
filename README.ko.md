@@ -65,6 +65,8 @@ graph TB
 | **CI/CD** | GitHub Actions, Workload Identity Federation |
 | **도구 관리** | mise (Node, Python, Flutter, Terraform 버전 통합) |
 
+> **[왜 이 기술 스택인가?](./docs/WHY.ko.md)** — 각 기술 선택에 대한 상세한 이유.
+
 ![Fullstack](./docs/fullstack.jpg)
 
 ## 사전 요구사항

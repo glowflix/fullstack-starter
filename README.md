@@ -65,6 +65,8 @@ graph TB
 | **CI/CD** | GitHub Actions, Workload Identity Federation |
 | **Tool Management** | mise (unified Node, Python, Flutter, Terraform versions) |
 
+> **[Why this tech stack?](./docs/WHY.md)** — Detailed reasoning behind each technology choice.
+
 ![Fullstack](./docs/fullstack.jpg)
 
 ## Prerequisites
