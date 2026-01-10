@@ -30,7 +30,7 @@ Modern fullstack monorepo template with Next.js 16, FastAPI, Flutter, and GCP in
 - **Retry**: tenacity
 
 ### Mobile (apps/mobile)
-- **Framework**: Flutter 3.32
+- **Framework**: Flutter 3.38
 - **State**: Riverpod 3
 - **Routing**: go_router 17
 - **API Client**: swagger_parser (OpenAPI codegen)
