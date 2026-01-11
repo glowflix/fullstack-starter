@@ -1,6 +1,6 @@
 # Fullstack Starter
 
-[![GitHub Repo stars](https://img.shields.io/github/stars/first-fluke/fullstack-starter?style=flat&logo=githubsponsors)](https://github.com/first-fluke/fullstack-starter/stargazers)
+[![GitHub Repo stars](https://img.shields.io/github/stars/first-fluke/fullstack-starter?logo=githubsponsors)](https://github.com/first-fluke/fullstack-starter/stargazers)
 
 [English](./README.md) | 한국어
 
