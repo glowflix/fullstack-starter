@@ -21,6 +21,8 @@ test = { depends = ["//apps/api:test", "//apps/web:test", "//apps/worker:test"],
 typecheck = { depends = ["//apps/api:typecheck", "//apps/web:typecheck"], description = "Type check all apps" }
 "i18n:build" = { depends = ["//packages/i18n:build"], description = "Build i18n files" }
 "gen:api" = { run = "mise //apps/api:gen:openapi && mise //apps/web:gen:api", description = "Generate OpenAPI schema and API clients" }
+"infra:up" = { depends = ["//apps/api:infra:up"], description = "Start local infrastructure" }
+"infra:down" = { depends = ["//apps/api:infra:down"], description = "Stop local infrastructure" }
 
 [tasks."git:commit-msg"]
 description = "Validate commit message using commitlint"

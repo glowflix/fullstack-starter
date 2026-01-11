@@ -1,5 +1,7 @@
 # Fullstack Starter
 
+[![GitHub Repo stars](https://img.shields.io/github/stars/first-fluke/fullstack-starter?style=flat&logo=githubsponsors)](https://github.com/first-fluke/fullstack-starter/stargazers)
+
 English | [한국어](./README.ko.md)
 
 Production-ready fullstack monorepo template with Next.js 16, FastAPI, Flutter, and GCP infrastructure.
@@ -106,7 +108,7 @@ cd apps/mobile && flutter pub get
 ### 3. Start Local Infrastructure
 
 ```bash
-mise //apps/api:infra:up
+mise infra:up
 ```
 
 This starts:
@@ -170,6 +172,8 @@ mise tasks --all
 | `mise typecheck` | Type check |
 | `mise i18n:build` | Build i18n files |
 | `mise gen:api` | Generate OpenAPI schema and API clients |
+| `mise infra:up` | Start local infrastructure |
+| `mise infra:down` | Stop local infrastructure |
 
 ### App-specific Tasks
 

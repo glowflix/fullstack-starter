@@ -1,5 +1,7 @@
 # Fullstack Starter
 
+[![GitHub Repo stars](https://img.shields.io/github/stars/first-fluke/fullstack-starter?style=flat&logo=githubsponsors)](https://github.com/first-fluke/fullstack-starter/stargazers)
+
 [English](./README.md) | 한국어
 
 프로덕션 레디 풀스택 모노레포 템플릿. Next.js 16, FastAPI, Flutter, GCP 인프라를 포함합니다.
@@ -106,7 +108,7 @@ cd apps/mobile && flutter pub get
 ### 3. 로컬 인프라 시작
 
 ```bash
-mise //apps/api:infra:up
+mise infra:up
 ```
 
 시작되는 서비스:
@@ -170,6 +172,8 @@ mise tasks --all
 | `mise typecheck` | 타입 체크 |
 | `mise i18n:build` | 다국어 파일 빌드 |
 | `mise gen:api` | OpenAPI 스키마 및 API 클라이언트 생성 |
+| `mise infra:up` | 로컬 인프라 시작 |
+| `mise infra:down` | 로컬 인프라 중지 |
 
 ### 앱별 태스크
 
