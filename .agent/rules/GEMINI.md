@@ -72,7 +72,7 @@ fullstack-starter/
 │   └── infra/        # Terraform infrastructure
 ├── packages/
 │   └── i18n/         # Shared i18n (source of truth)
-│       └── source/   # ARB source files
+│       └── src/      # ARB source files
 ├── .agent/rules/     # AI agent guidelines
 └── .github/workflows/ # CI/CD pipelines
 ```
@@ -103,7 +103,7 @@ fullstack-starter/
 
 ### i18n Flow
 ```
-packages/i18n/source/*.arb (edit here)
+packages/i18n/src/*.arb (edit here)
         ↓ mise i18n:build
 apps/web/src/config/messages/*.json (auto-generated)
 apps/mobile/lib/i18n/messages/*.arb (auto-generated)

@@ -147,6 +147,7 @@ fullstack-starter/
 │   └── infra/         # Terraform infrastructure
 ├── packages/
 │   ├── i18n/          # Shared i18n package (Source of Truth)
+│   ├── design-tokens/ # Shared design tokens (Source of Truth)
 │   └── shared/        # Shared utilities
 ├── .agent/rules/      # AI agent guidelines
 ├── .serena/           # Serena MCP config
@@ -262,6 +263,17 @@ mise tasks --all
 
 </details>
 
+<details>
+<summary>Design Tokens (packages/design-tokens)</summary>
+
+| Command | Description |
+|---------|-------------|
+| `mise //packages/design-tokens:build` | Build tokens for web and mobile |
+| `mise //packages/design-tokens:dev` | Watch mode for development |
+| `mise //packages/design-tokens:test` | Run tests |
+
+</details>
+
 ## Internationalization (i18n)
 
 `packages/i18n` is the Single Source of Truth for i18n resources.
@@ -277,6 +289,21 @@ mise i18n:build
 # Generated files:
 # - apps/web/src/config/messages/*.json (Nested JSON)
 # - apps/mobile/lib/i18n/messages/app_*.arb (Flutter ARB)
+```
+
+## Design Tokens
+
+`packages/design-tokens` is the Single Source of Truth for design tokens (colors, spacing, etc.).
+
+```bash
+# Edit tokens
+packages/design-tokens/src/tokens.ts
+
+# Build and distribute
+mise //packages/design-tokens:build
+# Generated files:
+# - apps/web/src/app/[locale]/tokens.css (CSS variables)
+# - apps/mobile/lib/core/theme/generated_theme.dart (Flutter Theme)
 ```
 
 ## Configuration

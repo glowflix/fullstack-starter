@@ -54,6 +54,8 @@ jobs:
             **/.terraform.lock.hcl
             apps/web/src/config/messages/*.json
             apps/mobile/lib/i18n/messages/*.arb
+            apps/web/src/app/[locale]/tokens.css
+            apps/mobile/lib/core/theme/generated_theme.dart
 
   biome:
     name: Biome (JS/TS)
