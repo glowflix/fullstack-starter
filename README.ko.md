@@ -391,6 +391,5 @@ MIT
 또는 스타를 남겨주세요:
 
 ```bash
-# 먼저 확장 설치: gh extension install maggie-j-liu/gh-star
-gh star first-fluke/fullstack-starter
+gh api --method PUT /user/starred/first-fluke/fullstack-starter
 ```
