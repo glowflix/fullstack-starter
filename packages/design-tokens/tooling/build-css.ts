@@ -2,13 +2,13 @@ import { writeFileSync, mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { kebabCase } from "es-toolkit";
-import { tokens, type ColorScheme, type OklchColor } from "../src/tokens.js";
+import { tokens, type ColorTokens, type OklchColor } from "../src/tokens.js";
 import { oklchToCss } from "./oklch-to-p3.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUTPUT_PATH = resolve(__dirname, "../../../apps/web/src/app/[locale]/tokens.css");
 
-function generateColorVariables(colors: ColorScheme, indent = "  "): string {
+function generateColorVariables(colors: Record<string, OklchColor>, indent = "  "): string {
   return Object.entries(colors)
     .map(([key, color]) => {
       const cssVar = kebabCase(key);
@@ -22,11 +22,16 @@ function generateCss(): string {
   return `:root {
   --radius: ${tokens.radius.base / 16}rem;
 
-${generateColorVariables(tokens.colors.light)}
+  /* Semantic Colors */
+${generateColorVariables(tokens.semantic)}
+
+  /* Light Mode Colors */
+${generateColorVariables(tokens.color.light)}
 }
 
 .dark {
-${generateColorVariables(tokens.colors.dark)}
+  /* Dark Mode Colors */
+${generateColorVariables(tokens.color.dark)}
 }
 `;
 }

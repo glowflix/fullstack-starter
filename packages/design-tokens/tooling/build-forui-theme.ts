@@ -1,7 +1,7 @@
 import { writeFileSync, mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { tokens, type ColorScheme, type OklchColor } from "../src/tokens.js";
+import { tokens, type OklchColor } from "../src/tokens.js";
 import { oklchToP3, p3ToFlutterColor } from "./oklch-to-p3.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -12,9 +12,12 @@ function oklchToFlutter(oklch: OklchColor): string {
   return p3ToFlutterColor(p3);
 }
 
+// Infer keys from the light theme token definition
+type TokenKey = keyof typeof tokens.color.light;
+
 interface FColorSchemeMapping {
   property: string;
-  tokenKey: keyof ColorScheme;
+  tokenKey: TokenKey;
 }
 
 const colorSchemeMapping: FColorSchemeMapping[] = [
@@ -34,7 +37,7 @@ const colorSchemeMapping: FColorSchemeMapping[] = [
   { property: "border", tokenKey: "border" },
 ];
 
-function generateColorProperties(colors: ColorScheme): string {
+function generateColorProperties(colors: Record<string, OklchColor>): string {
   return colorSchemeMapping
     .map((mapping) => {
       const color = colors[mapping.tokenKey];
@@ -45,7 +48,7 @@ function generateColorProperties(colors: ColorScheme): string {
 }
 
 function generateTheme(mode: "light" | "dark"): string {
-  const colors = mode === "light" ? tokens.colors.light : tokens.colors.dark;
+  const colors = mode === "light" ? tokens.color.light : tokens.color.dark;
   const baseTheme = mode === "light" ? "FThemes.zinc.light" : "FThemes.zinc.dark";
   const themeName = mode === "light" ? "Light" : "Dark";
 
