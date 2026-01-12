@@ -1,4 +1,5 @@
 from collections.abc import Callable
+
 from tenacity import (
     retry,
     retry_if_exception_type,

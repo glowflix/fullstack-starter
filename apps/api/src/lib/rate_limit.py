@@ -79,7 +79,7 @@ class RedisRateLimiter:
     def __init__(self, requests: int, window: int):
         self.requests = requests
         self.window = window
-        self._redis: "redis_module.Redis | None" = None
+        self._redis: redis_module.Redis | None = None
 
     async def _get_redis(self) -> "redis_module.Redis":
         """Lazy Redis connection."""
