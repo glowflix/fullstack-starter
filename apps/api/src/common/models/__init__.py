@@ -8,9 +8,9 @@ from src.common.models.pagination import (
 )
 
 __all__ = [
-    "TimestampMixin",
-    "UUIDMixin",
     "PaginatedResponse",
     "PaginationMeta",
     "PaginationParams",
+    "TimestampMixin",
+    "UUIDMixin",
 ]

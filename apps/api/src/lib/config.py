@@ -46,7 +46,7 @@ class Settings(BaseSettings):
     GCS_BUCKET_NAME: str | None = None
     MINIO_ENDPOINT: str = "localhost:9000"
     MINIO_ACCESS_KEY: str = "minioadmin"
-    MINIO_SECRET_KEY: str = "minioadmin"
+    MINIO_SECRET_KEY: str = "minioadmin"  # noqa: S105
 
 
 @lru_cache

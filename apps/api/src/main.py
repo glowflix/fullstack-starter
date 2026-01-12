@@ -1,5 +1,6 @@
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import AsyncIterator, Literal
+from typing import Literal
 from uuid import uuid4
 
 import structlog

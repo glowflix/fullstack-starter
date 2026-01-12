@@ -1,5 +1,7 @@
 """OpenTelemetry configuration for distributed tracing."""
 
+import contextlib
+
 from opentelemetry import trace
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
@@ -60,10 +62,8 @@ def instrument_app(app: "FastAPI") -> None:  # noqa: F821
     HTTPXClientInstrumentor().instrument()
 
     # Instrument Redis (if available)
-    try:
+    with contextlib.suppress(Exception):
         RedisInstrumentor().instrument()
-    except Exception:
-        pass  # Redis not installed or not configured
 
 
 def get_tracer(name: str = __name__) -> trace.Tracer:

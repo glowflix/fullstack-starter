@@ -2,8 +2,8 @@
 
 import time
 from collections import defaultdict
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Callable
 
 from fastapi import HTTPException, Request, status
 
@@ -180,9 +180,9 @@ def rate_limit(
             key = actual_key_func(request)
 
             if isinstance(limiter, RedisRateLimiter):
-                allowed, remaining, reset_after = await limiter.is_allowed(key)
+                allowed, _remaining, reset_after = await limiter.is_allowed(key)
             else:
-                allowed, remaining, reset_after = limiter.is_allowed(key)
+                allowed, _remaining, reset_after = limiter.is_allowed(key)
 
             if not allowed:
                 logger.warning("Rate limit exceeded", key=key)

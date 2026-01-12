@@ -30,7 +30,7 @@ class PaginationMeta(BaseModel):
     has_prev: bool = Field(description="Whether there is a previous page")
 
 
-class PaginatedResponse(BaseModel, Generic[T]):
+class PaginatedResponse(BaseModel, Generic[T]):  # noqa: UP046
     """Generic paginated response wrapper."""
 
     data: list[T]

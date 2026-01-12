@@ -22,15 +22,15 @@ DBSession = Annotated[AsyncSession, Depends(get_db)]
 
 # Re-export auth dependencies for convenience
 __all__ = [
-    "DBSession",
     "CurrentUser",
+    "DBSession",
+    "OptionalSession",
     "OptionalUser",
     "RequiredSession",
-    "OptionalSession",
-    "SessionUser",
     "SessionResponse",
+    "SessionUser",
     "get_current_user",
+    "get_optional_session",
     "get_optional_user",
     "get_required_session",
-    "get_optional_session",
 ]

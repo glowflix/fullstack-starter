@@ -1,6 +1,6 @@
 from collections.abc import Callable
 from functools import wraps
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any
 
 import httpx
 from fastapi import Depends, HTTPException, Request, status
