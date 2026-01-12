@@ -170,6 +170,7 @@ mise tasks --all
 
 | 명령어 | 설명 |
 |--------|------|
+| `mise run install` | 모든 의존성 설치 |
 | `mise dev` | 모든 서비스 시작 |
 | `mise lint` | 전체 앱 린트 검사 |
 | `mise format` | 전체 앱 코드 포맷팅 |
@@ -187,6 +188,7 @@ mise tasks --all
 
 | 명령어 | 설명 |
 |--------|------|
+| `mise //apps/api:install` | 의존성 설치 |
 | `mise //apps/api:dev` | 개발 서버 시작 |
 | `mise //apps/api:test` | 테스트 실행 |
 | `mise //apps/api:lint` | 린터 실행 |
@@ -205,6 +207,7 @@ mise tasks --all
 
 | 명령어 | 설명 |
 |--------|------|
+| `mise //apps/web:install` | 의존성 설치 |
 | `mise //apps/web:dev` | 개발 서버 시작 |
 | `mise //apps/web:build` | 프로덕션 빌드 |
 | `mise //apps/web:test` | 테스트 실행 |
@@ -220,6 +223,7 @@ mise tasks --all
 
 | 명령어 | 설명 |
 |--------|------|
+| `mise //apps/mobile:install` | 의존성 설치 |
 | `mise //apps/mobile:dev` | 디바이스/시뮬레이터 실행 |
 | `mise //apps/mobile:build` | 앱 빌드 |
 | `mise //apps/mobile:test` | 테스트 실행 |
@@ -235,6 +239,7 @@ mise tasks --all
 
 | 명령어 | 설명 |
 |--------|------|
+| `mise //apps/worker:install` | 의존성 설치 |
 | `mise //apps/worker:dev` | 워커 시작 |
 | `mise //apps/worker:test` | 테스트 실행 |
 | `mise //apps/worker:lint` | 린터 실행 |
@@ -260,6 +265,7 @@ mise tasks --all
 
 | 명령어 | 설명 |
 |--------|------|
+| `mise //packages/i18n:install` | 의존성 설치 |
 | `mise //packages/i18n:build` | 웹/모바일용 다국어 파일 빌드 |
 | `mise //packages/i18n:build:web` | 웹용 파일만 생성 |
 | `mise //packages/i18n:build:mobile` | 모바일용 파일만 생성 |
@@ -271,6 +277,7 @@ mise tasks --all
 
 | 명령어 | 설명 |
 |--------|------|
+| `mise //packages/design-tokens:install` | 의존성 설치 |
 | `mise //packages/design-tokens:build` | 웹/모바일용 토큰 생성 |
 | `mise //packages/design-tokens:dev` | 개발용 워치 모드 |
 | `mise //packages/design-tokens:test` | 테스트 실행 |

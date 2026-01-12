@@ -170,6 +170,7 @@ mise tasks --all
 
 | Command | Description |
 |---------|-------------|
+| `mise run install` | Install all dependencies |
 | `mise dev` | Start all services |
 | `mise lint` | Lint all apps |
 | `mise format` | Format all apps |
@@ -187,6 +188,7 @@ mise tasks --all
 
 | Command | Description |
 |---------|-------------|
+| `mise //apps/api:install` | Install dependencies |
 | `mise //apps/api:dev` | Start development server |
 | `mise //apps/api:test` | Run tests |
 | `mise //apps/api:lint` | Run linter |
@@ -205,6 +207,7 @@ mise tasks --all
 
 | Command | Description |
 |---------|-------------|
+| `mise //apps/web:install` | Install dependencies |
 | `mise //apps/web:dev` | Start development server |
 | `mise //apps/web:build` | Production build |
 | `mise //apps/web:test` | Run tests |
@@ -220,6 +223,7 @@ mise tasks --all
 
 | Command | Description |
 |---------|-------------|
+| `mise //apps/mobile:install` | Install dependencies |
 | `mise //apps/mobile:dev` | Run on device/simulator |
 | `mise //apps/mobile:build` | Build |
 | `mise //apps/mobile:test` | Run tests |
@@ -235,6 +239,7 @@ mise tasks --all
 
 | Command | Description |
 |---------|-------------|
+| `mise //apps/worker:install` | Install dependencies |
 | `mise //apps/worker:dev` | Start worker |
 | `mise //apps/worker:test` | Run tests |
 | `mise //apps/worker:lint` | Run linter |
@@ -260,6 +265,7 @@ mise tasks --all
 
 | Command | Description |
 |---------|-------------|
+| `mise //packages/i18n:install` | Install dependencies |
 | `mise //packages/i18n:build` | Build i18n files for web and mobile |
 | `mise //packages/i18n:build:web` | Build for web only |
 | `mise //packages/i18n:build:mobile` | Build for mobile only |
@@ -271,6 +277,7 @@ mise tasks --all
 
 | Command | Description |
 |---------|-------------|
+| `mise //packages/design-tokens:install` | Install dependencies |
 | `mise //packages/design-tokens:build` | Build tokens for web and mobile |
 | `mise //packages/design-tokens:dev` | Watch mode for development |
 | `mise //packages/design-tokens:test` | Run tests |
