@@ -75,13 +75,27 @@ graph TB
 
 ![Fullstack](./docs/fullstack.jpg)
 
-## 사전 요구사항
+## 빠른 시작
+
+이 템플릿으로 시작하는 방법 중 하나를 선택하세요:
+
+```bash
+# CLI로 생성하기
+pnpm create fullstack-starter my-app
+# 또는
+npm create fullstack-starter my-app
+```
+
+또는 GitHub에서:
+
+1. **[Use this template](https://github.com/first-fluke/fullstack-starter/generate)**을 클릭하여 새 레포지토리 생성
+2. 또는 이 레포지토리를 **[Fork](https://github.com/first-fluke/fullstack-starter/fork)**
+
+### 사전 요구사항
 
 - [mise](https://mise.jdx.dev/) - 런타임 버전 관리자
 - [Docker](https://www.docker.com/) - 로컬 인프라 구동
 - [Terraform](https://www.terraform.io/) - 클라우드 인프라 (선택 사항)
-
-## 빠른 시작
 
 ### 1. 런타임 설치
 
@@ -96,6 +110,10 @@ mise install
 ### 2. 의존성 설치
 
 ```bash
+# 모든 의존성 일괄 설치 (권장)
+mise run install
+
+# 또는 개별 설치
 # 웹 의존성 (JS/TS)
 cd apps/web && pnpm install
 
@@ -177,6 +195,7 @@ mise tasks --all
 | `mise test` | 전체 앱 테스트 실행 |
 | `mise typecheck` | 타입 체크 |
 | `mise i18n:build` | 다국어 파일 빌드 |
+| `mise design-token:build` | 디자인 토큰 빌드 |
 | `mise gen:api` | OpenAPI 스키마 및 클라이언트 생성 |
 | `mise infra:up` | 로컬 인프라 시작 |
 | `mise infra:down` | 로컬 인프라 중지 |
@@ -310,7 +329,7 @@ mise i18n:build
 packages/design-tokens/src/tokens.ts
 
 # 빌드 및 배포
-mise //packages/design-tokens:build
+mise design-token:build
 # 생성 파일:
 # - apps/web/src/app/[locale]/tokens.css (CSS 변수)
 # - apps/mobile/lib/core/theme/generated_theme.dart (Flutter 테마)

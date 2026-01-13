@@ -75,13 +75,27 @@ graph TB
 
 ![Fullstack](./docs/fullstack.jpg)
 
-## Prerequisites
+## Quick Start
+
+Choose one of the following methods to start with this template:
+
+```bash
+# Create from CLI
+pnpm create fullstack-starter my-app
+# or
+npm create fullstack-starter my-app
+```
+
+Or use GitHub:
+
+1. Click **[Use this template](https://github.com/first-fluke/fullstack-starter/generate)** to create a new repository
+2. Or **[Fork](https://github.com/first-fluke/fullstack-starter/fork)** this repository
+
+### Prerequisites
 
 - [mise](https://mise.jdx.dev/) - Runtime version manager
 - [Docker](https://www.docker.com/) - Local infrastructure
 - [Terraform](https://www.terraform.io/) - Cloud infrastructure (optional)
-
-## Quick Start
 
 ### 1. Install Runtimes
 
@@ -96,6 +110,10 @@ mise install
 ### 2. Install Dependencies
 
 ```bash
+# Install all dependencies at once (recommended)
+mise run install
+
+# Or install individually
 # Web dependencies (JS/TS)
 cd apps/web && pnpm install
 
@@ -177,6 +195,7 @@ mise tasks --all
 | `mise test` | Test all apps |
 | `mise typecheck` | Type check |
 | `mise i18n:build` | Build i18n files |
+| `mise design-token:build` | Build design tokens |
 | `mise gen:api` | Generate OpenAPI schema and API clients |
 | `mise infra:up` | Start local infrastructure |
 | `mise infra:down` | Stop local infrastructure |
@@ -310,7 +329,7 @@ mise i18n:build
 packages/design-tokens/src/tokens.ts
 
 # Build and distribute
-mise //packages/design-tokens:build
+mise design-token:build
 # Generated files:
 # - apps/web/src/app/[locale]/tokens.css (CSS variables)
 # - apps/mobile/lib/core/theme/generated_theme.dart (Flutter Theme)

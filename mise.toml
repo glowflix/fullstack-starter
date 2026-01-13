@@ -21,6 +21,7 @@ format = { depends = ["//apps/api:format", "//apps/web:format", "//apps/worker:f
 test = { depends = ["//apps/api:test", "//apps/web:test", "//apps/worker:test"], description = "Test all apps" }
 typecheck = { depends = ["//apps/api:typecheck", "//apps/web:typecheck"], description = "Type check all apps" }
 "i18n:build" = { depends = ["//packages/i18n:build"], description = "Build i18n files" }
+"design-token:build" = { depends = ["//packages/design-tokens:build"], description = "Build design tokens" }
 "gen:api" = { run = "mise //apps/api:gen:openapi && mise //apps/web:gen:api", description = "Generate OpenAPI schema and API clients" }
 "infra:up" = { depends = ["//apps/api:infra:up"], description = "Start local infrastructure" }
 "infra:down" = { depends = ["//apps/api:infra:down"], description = "Stop local infrastructure" }
