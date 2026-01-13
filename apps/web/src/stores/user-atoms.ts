@@ -1,7 +1,4 @@
 import { atom } from "jotai";
-import { atomWithStorage } from "jotai/utils";
-
-export const themeAtom = atomWithStorage<"light" | "dark" | "system">("theme", "system");
 
 interface User {
   id: string;
@@ -11,3 +8,6 @@ interface User {
 
 export const userAtom = atom<User | null>(null);
 export const isLoggedInAtom = atom((get) => get(userAtom) !== null);
+
+userAtom.debugLabel = "user";
+isLoggedInAtom.debugLabel = "isLoggedIn";

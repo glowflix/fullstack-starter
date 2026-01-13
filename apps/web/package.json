@@ -24,6 +24,7 @@
     "@opentelemetry/sdk-node": "^0.208.0",
     "@opentelemetry/sdk-trace-base": "^2.2.0",
     "@opentelemetry/semantic-conventions": "^1.38.0",
+    "@reactuses/core": "^6.1.8",
     "@serwist/turbopack": "^9.5.0",
     "@tanstack/react-devtools": "^0.9.1",
     "@tanstack/react-form": "^1.27.7",
