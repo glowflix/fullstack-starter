@@ -5,18 +5,16 @@ import { resourceFromAttributes } from "@opentelemetry/resources";
 import { NodeSDK } from "@opentelemetry/sdk-node";
 import { TraceIdRatioBasedSampler } from "@opentelemetry/sdk-trace-base";
 import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
-
-const serviceName = process.env.OTEL_SERVICE_NAME || "web";
-const sampleRate = Number.parseFloat(process.env.OTEL_SAMPLE_RATE || "0.1");
+import { env } from "@/config/env";
 
 const sdk = new NodeSDK({
   instrumentations: [new HttpInstrumentation(), new FetchInstrumentation()],
 
   resource: resourceFromAttributes({
-    [ATTR_SERVICE_NAME]: serviceName,
+    [ATTR_SERVICE_NAME]: env.OTEL_SERVICE_NAME,
   }),
 
-  sampler: new TraceIdRatioBasedSampler(sampleRate),
+  sampler: new TraceIdRatioBasedSampler(env.OTEL_SAMPLE_RATE),
 
   traceExporter: new TraceExporter(),
 });
