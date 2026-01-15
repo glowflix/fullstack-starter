@@ -22,8 +22,7 @@ dependencies = [
     "opentelemetry-instrumentation-httpx>=0.49b0",
     "opentelemetry-instrumentation-redis>=0.49b0",
     "opentelemetry-exporter-otlp>=1.28.0",
-    "python-jose>=3.3.0",
-    "cryptography>=44.0.0",
+    "jwcrypto>=1.5.6",
     "psycopg2-binary>=2.9.9",
 ]
 
@@ -36,7 +35,7 @@ dev = [
     "pytest-asyncio>=0.26.0",
     "pytest-cov>=6.1.1",
     "factory-boy>=3.3.3",
-    "types-python-jose>=3.3.0.13",
+
 ]
 
 [tool.uv]
@@ -83,4 +82,8 @@ ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
 module = ["redis.asyncio.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["jwcrypto.*"]
 ignore_missing_imports = true

@@ -1,13 +1,13 @@
 import json
 from collections.abc import Callable
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from functools import wraps
-from typing import Annotated, Any, Literal, cast
+from typing import Annotated, Any, Literal
 
 import httpx
 from fastapi import Depends, HTTPException, Request, status
-from jose import jwe
-from jose.exceptions import JWEError
+from jwcrypto import jwe, jwk
+from jwcrypto.common import JWException
 from pydantic import BaseModel
 
 from src.lib.config import settings
@@ -65,59 +65,64 @@ class CurrentUserInfo(BaseModel):
     email_verified: bool = False
 
 
+def _get_jwe_key() -> jwk.JWK:
+    """Get JWK key for JWE encryption/decryption."""
+    key_bytes = settings.JWE_SECRET_KEY.encode("utf-8")
+    if len(key_bytes) < 32:
+        key_bytes = key_bytes.ljust(32, b"\0")
+    elif len(key_bytes) > 32:
+        key_bytes = key_bytes[:32]
+    return jwk.JWK(kty="oct", k=jwk.base64url_encode(key_bytes))
+
+
 def create_access_token(user_id: str) -> str:
     """Create JWE access token."""
-    now = datetime.utcnow()
+    now = datetime.now(UTC)
     payload = {
         "user_id": user_id,
         "token_type": "access",
         "exp": int((now + timedelta(hours=1)).timestamp()),
         "iat": int(now.timestamp()),
     }
-    encrypted = jwe.encrypt(
-        json.dumps(payload).encode(),
-        settings.JWE_SECRET_KEY,
-        algorithm="A256GCM",
-        encryption="A256GCM",
+
+    key = _get_jwe_key()
+    jwe_token = jwe.JWE(
+        json.dumps(payload).encode("utf-8"),
+        recipient=key,
+        protected={"alg": "A256KW", "enc": "A256GCM"},
     )
-    if isinstance(encrypted, bytes):
-        return encrypted.decode()
-    return cast(str, encrypted)
+    return str(jwe_token.serialize(compact=True))
 
 
 def create_refresh_token(user_id: str) -> str:
     """Create JWE refresh token."""
-    now = datetime.utcnow()
+    now = datetime.now(UTC)
     payload = {
         "user_id": user_id,
         "token_type": "refresh",
         "exp": int((now + timedelta(days=7)).timestamp()),
         "iat": int(now.timestamp()),
     }
-    encrypted = jwe.encrypt(
-        json.dumps(payload).encode(),
-        settings.JWE_SECRET_KEY,
-        algorithm="A256GCM",
-        encryption="A256GCM",
+
+    key = _get_jwe_key()
+    jwe_token = jwe.JWE(
+        json.dumps(payload).encode("utf-8"),
+        recipient=key,
+        protected={"alg": "A256KW", "enc": "A256GCM"},
     )
-    if isinstance(encrypted, bytes):
-        return encrypted.decode()
-    return cast(str, encrypted)
+    return str(jwe_token.serialize(compact=True))
 
 
 def decode_token(token: str) -> TokenPayload:
     """Decode and validate JWE token."""
     try:
-        decrypted = jwe.decrypt(token, settings.JWE_SECRET_KEY)
-        if decrypted is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid token",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-        payload = json.loads(decrypted.decode())
+        key = _get_jwe_key()
+        jwe_token = jwe.JWE()
+        jwe_token.deserialize(token)
+        jwe_token.decrypt(key)
+        payload = json.loads(jwe_token.payload.decode("utf-8"))
         return TokenPayload(**payload)
-    except JWEError as e:
+    except JWException:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid token",
@@ -233,7 +238,7 @@ async def get_current_user(request: Request) -> CurrentUserInfo:
             detail="Invalid token type",
         )
 
-    if datetime.utcnow().timestamp() > payload.exp:
+    if datetime.now(UTC).timestamp() > payload.exp:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token expired",
