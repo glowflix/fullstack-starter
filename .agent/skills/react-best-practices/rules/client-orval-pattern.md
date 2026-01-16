@@ -19,7 +19,7 @@ This project uses Orval to generate type-safe React Query hooks from OpenAPI spe
 ### Correct Pattern:
 
 ```tsx
-// ✅ Use Orval-generated hooks in Client Components
+// Use Orval-generated hooks in Client Components
 "use client";
 
 import { useGetUsers, useCreateUser } from "@/lib/api/generated";
@@ -37,13 +37,13 @@ export function UserList() {
 ### Incorrect Patterns:
 
 ```tsx
-// ❌ Don't use RSC async data fetching
+// Don't use RSC async data fetching
 async function UserList() {
   const users = await fetch("/api/users").then(r => r.json());
   return <ul>{users.map(user => <UserItem key={user.id} user={user} />)}</ul>;
 }
 
-// ❌ Don't use manual fetch in useEffect
+// Don't use manual fetch in useEffect
 function UserList() {
   const [users, setUsers] = useState([]);
   useEffect(() => {
@@ -52,7 +52,7 @@ function UserList() {
   return <ul>{users.map(user => ...)}</ul>;
 }
 
-// ❌ Don't bypass Orval with direct axios calls
+// Don't bypass Orval with direct axios calls
 function UserList() {
   const { data } = useQuery({
     queryKey: ["users"],

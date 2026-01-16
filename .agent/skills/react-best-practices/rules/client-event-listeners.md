@@ -7,7 +7,35 @@ tags: client, event-listeners, subscription, optimization
 
 ## Deduplicate Global Event Listeners
 
-Use a module-level subscription pattern to share global event listeners across component instances.
+Use a library-based approach or module-level subscription pattern to share global event listeners across component instances.
+
+**Recommended: use `@reactuses/core`:**
+
+```tsx
+import { useEventListener } from "@reactuses/core";
+
+function Profile() {
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.metaKey && e.key === "p") {
+      console.log("Meta+P pressed!");
+    }
+    if (e.metaKey && e.key === "k") {
+      console.log("Meta+K pressed!");
+    }
+  };
+
+  // Single listener with stable subscription and automatic cleanup
+  useEventListener("keydown", handleKeyDown);
+
+  return <div>Press Meta+P or Meta+K</div>;
+}
+```
+
+`useEventListener` from `@reactuses/core` handles event subscription with proper cleanup. For multiple shortcuts, consolidate handlers into a single listener to avoid N listeners for N hooks.
+
+---
+
+**Manual approach (if not using a library):**
 
 **Incorrect (N instances = N listeners):**
 
@@ -16,12 +44,12 @@ function useKeyboardShortcut(key: string, callback: () => void) {
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.metaKey && e.key === key) {
-        callback()
+        callback();
       }
-    }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [key, callback])
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [key, callback]);
 }
 ```
 
@@ -31,45 +59,49 @@ When using the `useKeyboardShortcut` hook multiple times, each instance will reg
 
 ```tsx
 // Module-level Map to track callbacks per key
-const keyCallbacks = new Map<string, Set<() => void>>()
-let isListenerAttached = false
+const keyCallbacks = new Map<string, Set<() => void>>();
+let isListenerAttached = false;
 
 function attachGlobalListener() {
-  if (isListenerAttached) return
-  isListenerAttached = true
-  
-  window.addEventListener('keydown', (e: KeyboardEvent) => {
+  if (isListenerAttached) return;
+  isListenerAttached = true;
+
+  window.addEventListener("keydown", (e: KeyboardEvent) => {
     if (e.metaKey && keyCallbacks.has(e.key)) {
-      keyCallbacks.get(e.key)!.forEach(cb => cb())
+      keyCallbacks.get(e.key)!.forEach((cb) => cb());
     }
-  })
+  });
 }
 
 function useKeyboardShortcut(key: string, callback: () => void) {
   useEffect(() => {
-    attachGlobalListener()
-    
+    attachGlobalListener();
+
     if (!keyCallbacks.has(key)) {
-      keyCallbacks.set(key, new Set())
+      keyCallbacks.set(key, new Set());
     }
-    keyCallbacks.get(key)!.add(callback)
+    keyCallbacks.get(key)!.add(callback);
 
     return () => {
-      const set = keyCallbacks.get(key)
+      const set = keyCallbacks.get(key);
       if (set) {
-        set.delete(callback)
+        set.delete(callback);
         if (set.size === 0) {
-          keyCallbacks.delete(key)
+          keyCallbacks.delete(key);
         }
       }
-    }
-  }, [key, callback])
+    };
+  }, [key, callback]);
 }
 
 function Profile() {
   // Multiple shortcuts will share the same listener
-  useKeyboardShortcut('p', () => { /* ... */ }) 
-  useKeyboardShortcut('k', () => { /* ... */ })
+  useKeyboardShortcut("p", () => {
+    /* ... */
+  });
+  useKeyboardShortcut("k", () => {
+    /* ... */
+  });
   // ...
 }
 ```
