@@ -3,6 +3,32 @@ experimental_monorepo_root = true
 [settings]
 experimental = true
 
+[hooks]
+postinstall = '''
+  mkdir -p .git/hooks
+
+  # commit-msg
+  cat > .git/hooks/commit-msg <<'EOF'
+#!/bin/sh
+exec mise run git:commit-msg -- "$1"
+EOF
+  chmod +x .git/hooks/commit-msg
+
+  # pre-commit
+  cat > .git/hooks/pre-commit <<'EOF'
+#!/bin/sh
+exec mise run git:pre-commit
+EOF
+  chmod +x .git/hooks/pre-commit
+
+  # pre-push
+  cat > .git/hooks/pre-push <<'EOF'
+#!/bin/sh
+exec mise run git:pre-push
+EOF
+  chmod +x .git/hooks/pre-push
+'''
+
 [tools]
 node = "24"
 python = "3.12"
