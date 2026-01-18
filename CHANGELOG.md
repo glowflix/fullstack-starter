@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.2](https://github.com/first-fluke/fullstack-starter/compare/v2.2.1...v2.2.2) (2026-01-18)
+
+
+### Bug Fixes
+
+* **web:** resolve typescript errors in auth-client and custom instance ([4350494](https://github.com/first-fluke/fullstack-starter/commit/4350494f79e36de675354ba2495701759492874d))
+
 ## [2.2.1](https://github.com/first-fluke/fullstack-starter/compare/v2.2.0...v2.2.1) (2026-01-17)
 
 
