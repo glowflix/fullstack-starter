@@ -8,6 +8,7 @@ export const useCustomInstance = <T>() => {
       method: string;
       params?: object;
       data?: unknown;
+      headers?: Record<string, string>;
       signal?: AbortSignal;
     }): Promise<T> => {
       const { data } = await apiClient.request<T>(config);

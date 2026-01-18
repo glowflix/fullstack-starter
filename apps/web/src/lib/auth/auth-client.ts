@@ -35,8 +35,11 @@ function normalizeProviderId(providerId: string): OAuthProviderId | null {
 }
 
 async function resolveProviderFromAccounts(): Promise<OAuthProviderId | null> {
-  const accounts = await authClient.listAccounts();
-  for (const account of accounts ?? []) {
+  const result = await authClient.listAccounts();
+  const accounts = result.data;
+  if (!accounts || result.error) return null;
+
+  for (const account of accounts) {
     const providerId = normalizeProviderId((account as { providerId?: string }).providerId ?? "");
     if (providerId) return providerId;
   }
@@ -52,8 +55,9 @@ export async function exchangeOAuthForBackendJwt(providerId?: OAuthProviderId) {
   const resolvedProviderId = providerId ?? (await resolveProviderFromAccounts());
   if (!resolvedProviderId) return;
 
-  const { accessToken } = await authClient.getAccessToken({ providerId: resolvedProviderId });
-  if (!accessToken) return;
+  const tokenResult = await authClient.getAccessToken({ providerId: resolvedProviderId });
+  const accessToken = tokenResult.data?.accessToken;
+  if (!accessToken || tokenResult.error) return;
 
   const body: BackendOAuthLoginRequest = {
     provider: resolvedProviderId,
