@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.4.0](https://github.com/first-fluke/fullstack-starter/compare/v2.3.0...v2.4.0) (2026-01-19)
+
+
+### Features
+
+* Add comprehensive AI agent skills library ([615ed8f](https://github.com/first-fluke/fullstack-starter/commit/615ed8f0256c4b890568321abfa31064ed2d08fe))
+* Add comprehensive AI agent skills library ([4d6d56d](https://github.com/first-fluke/fullstack-starter/commit/4d6d56d14d048b37ec5c9196144cacded528bdf6))
+
 ## [2.3.0](https://github.com/first-fluke/fullstack-starter/compare/v2.2.2...v2.3.0) (2026-01-19)
 
 
